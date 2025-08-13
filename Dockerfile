@@ -1,17 +1,13 @@
-FROM golang:latest AS builder
+FROM cgr.dev/chainguard/go:latest AS builder
 WORKDIR /app
 
 ARG DERP_VERSION=latest
 RUN go install tailscale.com/cmd/derper@${DERP_VERSION}
 
-FROM ubuntu
+FROM cgr.dev/chainguard/wolfi-base
 WORKDIR /app
 
-ARG DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends apt-utils && \
-    apt-get install -y ca-certificates && \
+RUN apk add ca-certificates && \
     mkdir /app/certs
 
 ENV DERP_DOMAIN your-hostname.com
@@ -24,7 +20,7 @@ ENV DERP_HTTP_PORT 80
 ENV DERP_VERIFY_CLIENTS false
 ENV DERP_VERIFY_CLIENT_URL ""
 
-COPY --from=builder /go/bin/derper .
+COPY --from=builder /root/go/bin/derper .
 
 CMD /app/derper --hostname=$DERP_DOMAIN \
     --certmode=$DERP_CERT_MODE \
