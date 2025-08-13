@@ -11,7 +11,7 @@ This Docker image is built on [Chainguard's Wolfi](https://www.chainguard.dev/un
 > required: set env `DERP_DOMAIN` to your domain
 
 ```bash
-docker run -e DERP_DOMAIN=derper.your-domain.com -p 80:80 -p 443:443 -p 3478:3478/udp fredliang/derper
+docker run -e DERP_DOMAIN=derper.your-domain.com -p 80:80 -p 443:443 -p 3478:3478/udp rgv151/derper
 ```
 
 | env                    | required | description                                                                 | default value     |
